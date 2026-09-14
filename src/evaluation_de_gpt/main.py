@@ -5,7 +5,14 @@ from __future__ import annotations
 import sys
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QGridLayout, QLabel, QMainWindow, QPushButton, QWidget
+from PySide6.QtWidgets import (
+    QApplication,
+    QGridLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QWidget,
+)
 
 from .calculator import CalculatorError, calculate
 
@@ -24,7 +31,9 @@ class CalculatorWindow(QMainWindow):
         self._waiting_for_operand = False
 
         self._display_label = QLabel(self._display)
-        self._display_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self._display_label.setAlignment(
+            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        )
         self._display_label.setMinimumHeight(70)
         self._display_label.setObjectName("display")
 
