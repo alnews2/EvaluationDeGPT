@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sys
-from decimal import Decimal, InvalidOperation
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QGridLayout, QLabel, QMainWindow, QPushButton, QWidget
@@ -107,13 +106,12 @@ class CalculatorWindow(QMainWindow):
             return
         try:
             self._calculate_pending()
-        except CalculatorError as exc:
+        except CalculatorError:
             self._display = "Erreur"
             self._left = None
             self._operator = None
             self._waiting_for_operand = True
             self._refresh()
-            return
 
     def clear(self) -> None:
         self._display = "0"
