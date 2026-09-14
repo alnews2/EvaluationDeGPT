@@ -1,6 +1,6 @@
 """Module entry point."""
 
-from evaluation_de_gpt.main import main
+from .main import main
 
 
 if __name__ == "__main__":
