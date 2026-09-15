@@ -23,7 +23,7 @@ class CalculatorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Calculatrice")
-        self.setFixedSize(320, 440)
+        self.setFixedSize(320, 470)
 
         self._display = "0"
         self._left: str | None = None
@@ -69,10 +69,19 @@ class CalculatorWindow(QMainWindow):
             button.clicked.connect(callback)
             layout.addWidget(button, row, column)
 
+        self._credit_label = QLabel(
+            "Application générée par l'intelligence artificielle Claude de la société Anthropic."
+        )
+        self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._credit_label.setWordWrap(True)
+        self._credit_label.setObjectName("credit")
+        layout.addWidget(self._credit_label, 6, 0, 1, 4)
+
         self.setCentralWidget(central)
         self.setStyleSheet(
             "QLabel#display { font-size: 30px; padding: 8px; border: 1px solid #999; }"
             "QPushButton { font-size: 18px; }"
+            "QLabel#credit { font-size: 10px; padding: 6px; }"
         )
 
     def _refresh(self) -> None:
