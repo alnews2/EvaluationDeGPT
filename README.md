@@ -1,10 +1,14 @@
 # EvaluationDeGPT
 
-Application desktop de démonstration développée en Python + PySide6.
+Application desktop de démonstration développée en **Python + PySide6**.
 
-## V0 — Calculatrice
+## État du projet
 
-La première version propose une calculatrice de quatre opérations :
+La version `0.1.0` fournit une première calculatrice de quatre opérations et constitue la base fonctionnelle du projet. Le projet est développé progressivement, avec validation par Pull Request et CI Windows.
+
+## Fonctionnalités actuelles
+
+La calculatrice propose :
 
 - addition ;
 - soustraction ;
@@ -15,11 +19,23 @@ La première version propose une calculatrice de quatre opérations :
 - effacement et retour arrière ;
 - gestion de la division par zéro.
 
-La logique de calcul est séparée de l'interface graphique et couverte par des tests unitaires.
+La logique de calcul est séparée de l'interface graphique et couverte par des tests automatisés.
+
+## Documentation
+
+- [Démarrage rapide](docs/user/getting-started.md)
+- [Utilisation de la calculatrice](docs/user/calculator.md)
+- [Architecture](docs/developer/architecture.md)
+- [Guide de développement](docs/developer/development.md)
+- [Tests](docs/developer/testing.md)
+- [Build Windows](docs/developer/build.md)
+- [Contribuer au projet](CONTRIBUTING.md)
+- [Décisions d'architecture](docs/decisions/)
+- [Changelog](CHANGELOG.md)
 
 ## Développement
 
-Python 3.13 ou supérieur est requis.
+Python **3.13 ou supérieur** est requis.
 
 Avec `uv` :
 
@@ -35,15 +51,30 @@ Tests :
 uv run pytest
 ```
 
-Analyse/formatage :
+Analyse du code :
 
 ```text
 uv run ruff check .
-uv run ruff format .
 ```
+
+Vérification du formatage :
+
+```text
+uv run ruff format --check .
+```
+
+## Build Windows
+
+Le build Windows est automatisé par GitHub Actions. La CI exécute Ruff et pytest, puis génère `EvaluationDeGPT.exe` avec PyInstaller.
+
+L'artefact Windows est disponible dans les résultats de la CI lorsque le build réussit.
 
 ## Workflow Git
 
-- `main` contient uniquement les versions validées.
-- Les évolutions sont développées dans des branches dédiées.
-- Les changements sont proposés via Pull Request avant fusion.
+- `main` contient uniquement les versions validées ;
+- les évolutions sont développées dans des branches dédiées ;
+- les changements sont proposés via Pull Request avant fusion ;
+- la CI participe à la validation ;
+- la validation finale et la fusion restent sous le contrôle du propriétaire du dépôt.
+
+Les règles détaillées sont décrites dans [CONTRIBUTING.md](CONTRIBUTING.md).
