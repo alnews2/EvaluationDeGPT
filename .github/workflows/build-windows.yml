@@ -28,7 +28,7 @@ jobs:
         run: pytest
 
       - name: Build executable
-        run: pyinstaller --noconfirm --clean --onefile --windowed --name EvaluationDeGPT src/evaluation_de_gpt/main.py
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name EvaluationDeGPT src/evaluation_de_gpt/__main__.py
 
       - name: Upload executable
         uses: actions/upload-artifact@v4
