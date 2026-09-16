@@ -70,7 +70,7 @@ class CalculatorWindow(QMainWindow):
             layout.addWidget(button, row, column)
 
         self._credit_label = QLabel(
-            "Application générée par l'intelligence artificielle Claude de la société Anthropic."
+            "« Application générée par l'intelligence artificielle GPT de la société OpenAI »."
         )
         self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._credit_label.setWordWrap(True)
