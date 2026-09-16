@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-16
+
+### Changed
+
+- feat: automate releases and version tagging
+
 ### Changed
 
 - Affichage des résultats de la calculatrice en blanc sur fond noir.
