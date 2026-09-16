@@ -81,7 +81,8 @@ jobs:
           $date = Get-Date -Format 'yyyy-MM-dd'
           $changelog = Get-Content CHANGELOG.md -Raw
           $releaseSection = "## [$version] - $date`r`n`r`n### Changed`r`n`r`n- $($env:PR_TITLE)`r`n`r`n"
-          $changelog = $changelog -replace '(## \[Unreleased\].*?\r?\n\r?\n)', "`$1$releaseSection", 1
+          $pattern = '(## \[Unreleased\].*?\r?\n\r?\n)'
+          $changelog = [regex]::Replace($changelog, $pattern, { param($m) $m.Groups[1].Value + $releaseSection }, 1)
           Set-Content CHANGELOG.md $changelog -NoNewline
 
           "VERSION=$version" >> $env:GITHUB_ENV
