@@ -7,9 +7,9 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- À compléter pour les prochaines évolutions.
+- Affichage des résultats de la calculatrice en blanc sur fond noir.
 
 ## [0.1.0] - 2026-09-15
 
@@ -25,4 +25,4 @@ Les versions suivent le versionnement sémantique (SemVer).
 - Tests automatisés avec pytest.
 - Vérification du code avec Ruff.
 - Construction d'un exécutable Windows avec GitHub Actions et PyInstaller.
-- Attribution de l'utilisation de Claude/Anthropic dans l'interface.
+- Attribution de l'utilisation de GPT par OpenAI dans l'interface.

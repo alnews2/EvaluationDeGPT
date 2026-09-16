@@ -79,7 +79,8 @@ class CalculatorWindow(QMainWindow):
 
         self.setCentralWidget(central)
         self.setStyleSheet(
-            "QLabel#display { font-size: 30px; padding: 8px; border: 1px solid #999; }"
+            "QLabel#display { font-size: 30px; padding: 8px; color: white; "
+            "background-color: black; border: 1px solid #999; }"
             "QPushButton { font-size: 18px; }"
             "QLabel#credit { font-size: 10px; padding: 6px; }"
         )
