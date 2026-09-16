@@ -1,0 +1,127 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: windows-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Determine version bump
+        id: bump
+        shell: pwsh
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          $title = $env:PR_TITLE
+          if ([string]::IsNullOrWhiteSpace($title)) {
+            "release=false" >> $env:GITHUB_OUTPUT
+            Write-Host "No pull request title available; no release will be created."
+            exit 0
+          }
+
+          if ($title -match '^feat(\([^)]*\))?!:') {
+            "bump=major" >> $env:GITHUB_OUTPUT
+          } elseif ($title -match '^feat(\([^)]*\))?:') {
+            "bump=minor" >> $env:GITHUB_OUTPUT
+          } elseif ($title -match '^fix(\([^)]*\))?:') {
+            "bump=patch" >> $env:GITHUB_OUTPUT
+          } else {
+            "release=false" >> $env:GITHUB_OUTPUT
+            Write-Host "PR title does not request a release: $title"
+            exit 0
+          }
+
+          "release=true" >> $env:GITHUB_OUTPUT
+
+      - name: Update version and changelog
+        if: steps.bump.outputs.release == 'true'
+        shell: pwsh
+        env:
+          BUMP: ${{ steps.bump.outputs.bump }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          $pyproject = Get-Content pyproject.toml -Raw
+          $match = [regex]::Match($pyproject, 'version\s*=\s*"(\d+)\.(\d+)\.(\d+)"')
+          if (-not $match.Success) { throw 'Version not found in pyproject.toml' }
+
+          $major = [int]$match.Groups[1].Value
+          $minor = [int]$match.Groups[2].Value
+          $patch = [int]$match.Groups[3].Value
+
+          switch ($env:BUMP) {
+            'major' { $major++; $minor = 0; $patch = 0 }
+            'minor' { $minor++; $patch = 0 }
+            'patch' { $patch++ }
+            default { throw "Unknown bump type: $($env:BUMP)" }
+          }
+
+          $version = "$major.$minor.$patch"
+          $updated = $pyproject -replace 'version\s*=\s*"\d+\.\d+\.\d+"', "version = `"$version`""
+          Set-Content pyproject.toml $updated -NoNewline
+
+          $date = Get-Date -Format 'yyyy-MM-dd'
+          $changelog = Get-Content CHANGELOG.md -Raw
+          $releaseSection = "## [$version] - $date`r`n`r`n### Changed`r`n`r`n- $($env:PR_TITLE)`r`n`r`n"
+          $changelog = $changelog -replace '(## \[Unreleased\].*?\r?\n\r?\n)', "`$1$releaseSection", 1
+          Set-Content CHANGELOG.md $changelog -NoNewline
+
+          "VERSION=$version" >> $env:GITHUB_ENV
+          Write-Host "Calculated version: $version"
+
+      - name: Commit version and changelog
+        if: steps.bump.outputs.release == 'true'
+        shell: pwsh
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pyproject.toml CHANGELOG.md
+          git commit -m "chore: release v$env:VERSION"
+          git push origin HEAD:main
+
+      - name: Install dependencies
+        if: steps.bump.outputs.release == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install . pytest ruff pyinstaller
+
+      - name: Lint
+        if: steps.bump.outputs.release == 'true'
+        run: ruff check .
+
+      - name: Tests
+        if: steps.bump.outputs.release == 'true'
+        run: pytest
+
+      - name: Build executable
+        if: steps.bump.outputs.release == 'true'
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name EvaluationDeGPT src/evaluation_de_gpt/__main__.py
+
+      - name: Create GitHub release
+        if: steps.bump.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $tag = "v$env:VERSION"
+          git tag -a $tag -m "Release $tag"
+          git push origin $tag
+          gh release create $tag dist/EvaluationDeGPT.exe --title $tag --generate-notes
