@@ -4,6 +4,8 @@ from evaluation_de_gpt.main import CalculatorWindow
 def make_window() -> CalculatorWindow:
     window = CalculatorWindow.__new__(CalculatorWindow)
     window._display = "0"
+    window._left = None
+    window._operator = None
     window._memory = None
     window._waiting_for_operand = False
     window._refresh = lambda: None
@@ -47,13 +49,7 @@ def test_clear_keeps_memory():
     window._memory = "42"
     window._display = "99"
 
-    # Reproduces the state reset performed by clear without creating widgets.
-    window.clear = lambda: (
-        setattr(window, "_display", "0"),
-        setattr(window, "_waiting_for_operand", False),
-        window._refresh(),
-    )
     window.clear()
     window.memory_recall()
 
-    assert window._display == "042"
+    assert window._display == "42"
