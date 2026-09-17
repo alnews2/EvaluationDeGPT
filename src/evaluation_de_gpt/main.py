@@ -23,12 +23,13 @@ class CalculatorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Calculatrice")
-        self.setFixedSize(320, 470)
+        self.setFixedSize(320, 510)
 
         self._display = "0"
         self._left: str | None = None
         self._operator: str | None = None
         self._waiting_for_operand = False
+        self._memory: str | None = None
 
         self._display_label = QLabel(self._display)
         self._display_label.setAlignment(
@@ -43,7 +44,8 @@ class CalculatorWindow(QMainWindow):
         layout.addWidget(self._display_label, 0, 0, 1, 4)
 
         buttons = [
-            ("C", 1, 0, self.clear), ("⌫", 1, 1, self.backspace),
+            ("C", 1, 0, self.clear),
+            ("⌫", 1, 1, self.backspace),
             ("÷", 1, 3, lambda: self.set_operator("÷")),
             ("7", 2, 0, lambda: self.input_digit("7")),
             ("8", 2, 1, lambda: self.input_digit("8")),
@@ -61,6 +63,8 @@ class CalculatorWindow(QMainWindow):
             (",", 5, 1, self.input_decimal),
             ("=", 5, 2, self.equals),
             ("±", 5, 3, self.toggle_sign),
+            ("M", 6, 0, self.memory_store),
+            ("MR", 6, 1, self.memory_recall),
         ]
 
         for text, row, column, callback in buttons:
@@ -75,7 +79,7 @@ class CalculatorWindow(QMainWindow):
         self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._credit_label.setWordWrap(True)
         self._credit_label.setObjectName("credit")
-        layout.addWidget(self._credit_label, 6, 0, 1, 4)
+        layout.addWidget(self._credit_label, 7, 0, 1, 4)
 
         self.setCentralWidget(central)
         self.setStyleSheet(
@@ -148,7 +152,27 @@ class CalculatorWindow(QMainWindow):
     def toggle_sign(self) -> None:
         if self._display == "0" or self._display == "Erreur":
             return
-        self._display = self._display[1:] if self._display.startswith("-") else "-" + self._display
+        self._display = (
+            self._display[1:]
+            if self._display.startswith("-")
+            else "-" + self._display
+        )
+        self._refresh()
+
+    def memory_store(self) -> None:
+        """Store the displayed number in the calculator memory."""
+        if self._display != "Erreur":
+            self._memory = self._display
+
+    def memory_recall(self) -> None:
+        """Insert the stored number as if it had been typed on the keyboard."""
+        if self._memory is None:
+            return
+        if self._waiting_for_operand or self._display in {"0", "Erreur"}:
+            self._display = self._memory
+            self._waiting_for_operand = False
+        else:
+            self._display += self._memory
         self._refresh()
 
 
