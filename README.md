@@ -4,7 +4,7 @@ Application desktop de démonstration développée en **Python + PySide6**.
 
 ## État du projet
 
-La version stable actuelle est `0.1.0`, enrichie par la fonctionnalité de mémoire de calculatrice : mémorisation (`M`) et restitution (`MR`) du nombre affiché.
+La version actuelle est **`0.2.0`** (17 septembre 2026). Elle reprend la calculatrice quatre opérations de la version `0.1.0` et ajoute une fonctionnalité de mémoire de calculatrice.
 
 Le projet est développé progressivement, avec validation par Pull Request et CI Windows. Le workflow de release valide l'installation, l'analyse du code, les tests et la construction Windows avant toute mise à jour de version ou publication.
 
@@ -20,7 +20,7 @@ La calculatrice propose :
 - changement de signe ;
 - effacement et retour arrière ;
 - mémorisation du nombre affiché avec `M` ;
-- restitution du nombre mémorisé avec `MR` ;
+- restitution du nombre mémorisé avec `MR`, comme une saisie clavier ;
 - conservation de la mémoire pendant les opérations et l'effacement de l'affichage ;
 - gestion de la division par zéro.
 
