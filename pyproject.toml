@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "evaluation-de-gpt"
-version = "0.2.0"
+version = "0.3.0"
 description = "Calculatrice quatre opérations - démonstrateur EvaluationDeGPT"
 requires-python = ">=3.13"
 dependencies = [
