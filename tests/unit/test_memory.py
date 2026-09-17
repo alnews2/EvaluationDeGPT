@@ -53,3 +53,16 @@ def test_clear_keeps_memory():
     window.memory_recall()
 
     assert window._display == "42"
+
+
+def test_memory_text_is_empty_when_no_value_is_stored():
+    window = make_window()
+
+    assert window._memory_text() == "Mémoire : —"
+
+
+def test_memory_text_displays_stored_value():
+    window = make_window()
+    window._memory = "42"
+
+    assert window._memory_text() == "Mémoire : 42"
