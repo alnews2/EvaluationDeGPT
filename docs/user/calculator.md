@@ -12,6 +12,8 @@ La version actuelle propose une calculatrice graphique à quatre opérations :
 - changement de signe ;
 - effacement complet ;
 - retour arrière ;
+- mémorisation du nombre affiché (`M`) ;
+- restitution du nombre mémorisé (`MR`) ;
 - gestion de la division par zéro.
 
 Les calculs utilisent `Decimal` afin d'éviter les imprécisions usuelles des calculs flottants binaires pour les valeurs décimales saisies par l'utilisateur.
@@ -24,9 +26,13 @@ La saisie se fait avec les boutons de la fenêtre :
 - `.` saisit le séparateur décimal ;
 - `+`, `-`, `×` et `÷` sélectionnent l'opération ;
 - `=` calcule le résultat ;
-- `C` efface la saisie et réinitialise l'état ;
+- `C` efface la saisie et réinitialise l'état de calcul, sans effacer la mémoire ;
 - `⌫` supprime le dernier caractère ;
-- `±` inverse le signe du nombre courant.
+- `±` inverse le signe du nombre courant ;
+- `M` mémorise le nombre affiché, sauf si l'affichage indique `Erreur` ;
+- `MR` restitue le nombre mémorisé comme une saisie clavier : il remplace l'affichage lorsqu'un nouvel opérande est attendu et s'ajoute à la saisie courante dans les autres cas.
+
+La mémoire conserve une seule valeur et reste disponible après un effacement de l'affichage.
 
 En cas de division par zéro, l'interface affiche `Erreur`.
 

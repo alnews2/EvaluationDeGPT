@@ -17,6 +17,8 @@ La calculatrice propose :
 - nombres décimaux ;
 - changement de signe ;
 - effacement et retour arrière ;
+- mémorisation du nombre affiché avec `M` ;
+- restitution du nombre mémorisé avec `MR` ;
 - gestion de la division par zéro.
 
 La logique de calcul est séparée de l'interface graphique et couverte par des tests automatisés.
