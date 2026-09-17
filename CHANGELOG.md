@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-17
+
+### Changed
+
+- feat: mémoriser et restituer un nombre
+
 ### Added
 
 - Mémorisation du nombre affiché avec la touche `M`.
