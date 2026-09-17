@@ -4,7 +4,7 @@ Application desktop de démonstration développée en **Python + PySide6**.
 
 ## État du projet
 
-La version actuelle est **`0.2.0`** (17 septembre 2026). Elle reprend la calculatrice quatre opérations de la version `0.1.0` et ajoute une fonctionnalité de mémoire de calculatrice.
+La calculatrice reprend la version à quatre opérations et ajoute une fonctionnalité de mémoire de calculatrice.
 
 L'interface affiche en permanence le contenu de la mémoire sous l'écran principal.
 
