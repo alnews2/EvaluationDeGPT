@@ -7,6 +7,11 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Added
+
+- Mémorisation du nombre affiché avec la touche `M`.
+- Restitution du nombre mémorisé avec la touche `MR`, comme une saisie clavier.
+
 ## [0.1.0] - 2026-09-15
 
 ### Added
