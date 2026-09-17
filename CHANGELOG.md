@@ -7,6 +7,11 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Added
+
+- Affichage permanent du contenu de la mémoire sous l'écran principal de la calculatrice.
+- Indication `—` lorsqu'aucune valeur n'est mémorisée.
+
 ## [0.2.0] - 2026-09-17
 
 ### Changed

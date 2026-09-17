@@ -23,7 +23,7 @@ class CalculatorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Calculatrice")
-        self.setFixedSize(320, 510)
+        self.setFixedSize(320, 535)
 
         self._display = "0"
         self._left: str | None = None
@@ -38,33 +38,38 @@ class CalculatorWindow(QMainWindow):
         self._display_label.setMinimumHeight(70)
         self._display_label.setObjectName("display")
 
+        self._memory_label = QLabel(self._memory_text())
+        self._memory_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        self._memory_label.setObjectName("memory")
+
         central = QWidget()
         layout = QGridLayout(central)
         layout.setSpacing(8)
         layout.addWidget(self._display_label, 0, 0, 1, 4)
+        layout.addWidget(self._memory_label, 1, 0, 1, 4)
 
         buttons = [
-            ("C", 1, 0, self.clear),
-            ("⌫", 1, 1, self.backspace),
-            ("÷", 1, 3, lambda: self.set_operator("÷")),
-            ("7", 2, 0, lambda: self.input_digit("7")),
-            ("8", 2, 1, lambda: self.input_digit("8")),
-            ("9", 2, 2, lambda: self.input_digit("9")),
-            ("×", 2, 3, lambda: self.set_operator("×")),
-            ("4", 3, 0, lambda: self.input_digit("4")),
-            ("5", 3, 1, lambda: self.input_digit("5")),
-            ("6", 3, 2, lambda: self.input_digit("6")),
-            ("-", 3, 3, lambda: self.set_operator("-")),
-            ("1", 4, 0, lambda: self.input_digit("1")),
-            ("2", 4, 1, lambda: self.input_digit("2")),
-            ("3", 4, 2, lambda: self.input_digit("3")),
-            ("+", 4, 3, lambda: self.set_operator("+")),
-            ("0", 5, 0, lambda: self.input_digit("0")),
-            (",", 5, 1, self.input_decimal),
-            ("=", 5, 2, self.equals),
-            ("±", 5, 3, self.toggle_sign),
-            ("M", 6, 0, self.memory_store),
-            ("MR", 6, 1, self.memory_recall),
+            ("C", 2, 0, self.clear),
+            ("⌫", 2, 1, self.backspace),
+            ("÷", 2, 3, lambda: self.set_operator("÷")),
+            ("7", 3, 0, lambda: self.input_digit("7")),
+            ("8", 3, 1, lambda: self.input_digit("8")),
+            ("9", 3, 2, lambda: self.input_digit("9")),
+            ("×", 3, 3, lambda: self.set_operator("×")),
+            ("4", 4, 0, lambda: self.input_digit("4")),
+            ("5", 4, 1, lambda: self.input_digit("5")),
+            ("6", 4, 2, lambda: self.input_digit("6")),
+            ("-", 4, 3, lambda: self.set_operator("-")),
+            ("1", 5, 0, lambda: self.input_digit("1")),
+            ("2", 5, 1, lambda: self.input_digit("2")),
+            ("3", 5, 2, lambda: self.input_digit("3")),
+            ("+", 5, 3, lambda: self.set_operator("+")),
+            ("0", 6, 0, lambda: self.input_digit("0")),
+            (",", 6, 1, self.input_decimal),
+            ("=", 6, 2, self.equals),
+            ("±", 6, 3, self.toggle_sign),
+            ("M", 7, 0, self.memory_store),
+            ("MR", 7, 1, self.memory_recall),
         ]
 
         for text, row, column, callback in buttons:
@@ -79,18 +84,23 @@ class CalculatorWindow(QMainWindow):
         self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._credit_label.setWordWrap(True)
         self._credit_label.setObjectName("credit")
-        layout.addWidget(self._credit_label, 7, 0, 1, 4)
+        layout.addWidget(self._credit_label, 8, 0, 1, 4)
 
         self.setCentralWidget(central)
         self.setStyleSheet(
             "QLabel#display { font-size: 30px; padding: 8px; color: white; "
             "background-color: black; border: 1px solid #999; }"
+            "QLabel#memory { font-size: 13px; padding: 3px 8px; }"
             "QPushButton { font-size: 18px; }"
             "QLabel#credit { font-size: 10px; padding: 6px; }"
         )
 
+    def _memory_text(self) -> str:
+        return f"Mémoire : {self._memory if self._memory is not None else '—'}"
+
     def _refresh(self) -> None:
         self._display_label.setText(self._display)
+        self._memory_label.setText(self._memory_text())
 
     def input_digit(self, digit: str) -> None:
         if self._waiting_for_operand or self._display == "0":
@@ -163,6 +173,7 @@ class CalculatorWindow(QMainWindow):
         """Store the displayed number in the calculator memory."""
         if self._display != "Erreur":
             self._memory = self._display
+            self._refresh()
 
     def memory_recall(self) -> None:
         """Insert the stored number as if it had been typed on the keyboard."""
