@@ -2,6 +2,8 @@
 
 [![Windows build](https://github.com/alnews2/EvaluationDeGPT/actions/workflows/build-windows.yml/badge.svg)](https://github.com/alnews2/EvaluationDeGPT/actions/workflows/build-windows.yml)
 [![Latest release](https://img.shields.io/github/v/release/alnews2/EvaluationDeGPT?display_name=tag)](https://github.com/alnews2/EvaluationDeGPT/releases/latest)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Qt 6](https://img.shields.io/badge/Qt-6-green?logo=qt&logoColor=white)](https://www.qt.io/)
 
 Application desktop de démonstration développée en **Python + PySide6**.
 
