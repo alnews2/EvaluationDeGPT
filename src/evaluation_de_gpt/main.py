@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
 )
 
 from .calculator import CalculatorError, calculate
+from .history import CalculationHistory
+from .history_window import HistoryWindow
 
 
 class CalculatorWindow(QMainWindow):
@@ -23,13 +25,15 @@ class CalculatorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Calculatrice")
-        self.setFixedSize(320, 535)
+        self.setFixedSize(320, 575)
 
         self._display = "0"
         self._left: str | None = None
         self._operator: str | None = None
         self._waiting_for_operand = False
         self._memory: str | None = None
+        self._history = CalculationHistory()
+        self._history_window: HistoryWindow | None = None
 
         self._display_label = QLabel(self._display)
         self._display_label.setAlignment(
@@ -70,6 +74,7 @@ class CalculatorWindow(QMainWindow):
             ("±", 6, 3, self.toggle_sign),
             ("M", 7, 0, self.memory_store),
             ("MR", 7, 1, self.memory_recall),
+            ("Historique", 8, 0, self.show_history),
         ]
 
         for text, row, column, callback in buttons:
@@ -84,7 +89,7 @@ class CalculatorWindow(QMainWindow):
         self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._credit_label.setWordWrap(True)
         self._credit_label.setObjectName("credit")
-        layout.addWidget(self._credit_label, 8, 0, 1, 4)
+        layout.addWidget(self._credit_label, 9, 0, 1, 4)
 
         self.setCentralWidget(central)
         self.setStyleSheet(
@@ -128,11 +133,15 @@ class CalculatorWindow(QMainWindow):
     def _calculate_pending(self) -> None:
         if self._left is None or self._operator is None:
             return
+        expression = f"{self._left} {self._operator} {self._display}"
         self._display = calculate(self._left, self._operator, self._display)
+        self._history.add(expression, self._display)
         self._left = None
         self._operator = None
         self._waiting_for_operand = True
         self._refresh()
+        if self._history_window is not None:
+            self._history_window.refresh()
 
     def equals(self) -> None:
         if self._operator is None:
@@ -185,6 +194,15 @@ class CalculatorWindow(QMainWindow):
         else:
             self._display += self._memory
         self._refresh()
+
+    def show_history(self) -> None:
+        """Show the calculation history window."""
+        if self._history_window is None:
+            self._history_window = HistoryWindow(self._history)
+        self._history_window.refresh()
+        self._history_window.show()
+        self._history_window.raise_()
+        self._history_window.activateWindow()
 
 
 def main() -> int:
