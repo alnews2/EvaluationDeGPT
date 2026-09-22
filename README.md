@@ -33,7 +33,9 @@ La calculatrice propose :
 - affichage permanent de l'état de la mémoire ;
 - affichage de `Mémoire : —` lorsqu'aucune valeur n'est mémorisée ;
 - affichage de `Mémoire : <valeur>` lorsqu'une valeur est mémorisée ;
-- gestion de la division par zéro.
+- gestion de la division par zéro ;
+- historique des calculs de la session dans une fenêtre dédiée ;
+- effacement de l'historique depuis sa fenêtre.
 
 La logique de calcul est séparée de l'interface graphique et couverte par des tests automatisés.
 
