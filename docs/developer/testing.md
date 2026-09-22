@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Les tests servent en priorité à protéger les comportements importants et à détecter les régressions. La couverture doit rester pertinente plutôt que viser un pourcentage arbitraire.
+Les tests servent en priorité à protéger les comportements importants et à détecter les régressions. La couverture permet de mesurer quelles parties du code sont effectivement exécutées par les tests ; elle sert d'indicateur pour identifier les zones à renforcer, sans viser un pourcentage arbitraire.
 
 ## Tests unitaires
 
@@ -13,6 +13,32 @@ Lancer tous les tests :
 ```text
 uv run pytest
 ```
+
+## Couverture de code
+
+La couverture est mesurée avec **coverage.py**, via l'environnement de développement.
+
+Lancer les tests avec mesure de couverture :
+
+```text
+uv run coverage run -m pytest
+```
+
+Afficher le rapport dans le terminal :
+
+```text
+uv run coverage report
+```
+
+Générer un rapport HTML détaillé :
+
+```text
+uv run coverage html
+```
+
+Le rapport HTML est généré dans `htmlcov/` et permet d'identifier les lignes non couvertes.
+
+La couverture est calculée avec la couverture des branches activée et porte sur le package `src/evaluation_de_gpt`.
 
 ## Contrôle du code
 
@@ -36,4 +62,6 @@ Une Pull Request doit indiquer les tests automatisés et les contrôles manuels 
 
 ## CI
 
-La CI Windows exécute actuellement Ruff et pytest avant de construire l'exécutable avec PyInstaller. Un artefact Windows est publié lorsque le build réussit.
+La CI Windows exécute Ruff, les tests avec mesure de couverture et produit un rapport HTML de couverture avant de construire l'exécutable avec PyInstaller.
+
+Le rapport HTML est conservé comme artefact GitHub Actions sous le nom `EvaluationDeGPT-coverage`. L'exécutable Windows reste disponible comme artefact séparé lorsque le build réussit.
