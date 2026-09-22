@@ -1,5 +1,8 @@
 # EvaluationDeGPT
 
+[![Windows build](https://github.com/alnews2/EvaluationDeGPT/actions/workflows/build-windows.yml/badge.svg)](https://github.com/alnews2/EvaluationDeGPT/actions/workflows/build-windows.yml)
+[![Latest release](https://img.shields.io/github/v/release/alnews2/EvaluationDeGPT?display_name=tag)](https://github.com/alnews2/EvaluationDeGPT/releases/latest)
+
 Application desktop de démonstration développée en **Python + PySide6**.
 
 ## État du projet
@@ -75,9 +78,9 @@ uv run ruff format --check .
 
 ## Build Windows
 
-Le build Windows est automatisé par GitHub Actions. La CI exécute Ruff et pytest, puis génère `EvaluationDeGPT.exe` avec PyInstaller.
+Le build Windows est automatisé par GitHub Actions. La CI exécute Ruff, les tests avec mesure de couverture, puis génère `EvaluationDeGPT.exe` avec PyInstaller.
 
-L'artefact Windows est disponible dans les résultats de la CI lorsque le build réussit.
+Le rapport HTML de couverture et l'artefact Windows sont disponibles dans les résultats de la CI lorsque le build réussit.
 
 ## Workflow Git
 
