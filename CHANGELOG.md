@@ -7,6 +7,15 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Added
+
+- Ajout d'une fenêtre dédiée affichant l'historique des calculs effectués pendant la session.
+- Ajout de la possibilité d'effacer l'historique des calculs.
+
+### Fixed
+
+- Correction de la largeur du bouton « Historique » afin que son libellé soit entièrement visible.
+
 ## [0.3.0] - 2026-09-17
 
 ### Changed
