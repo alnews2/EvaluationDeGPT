@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "feature/**"
+      - "feat/**"
   pull_request:
   workflow_dispatch:
 
@@ -22,13 +23,25 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install . pytest ruff pyinstaller
+          pip install . pytest coverage ruff pyinstaller
 
       - name: Lint
         run: ruff check .
 
-      - name: Tests
-        run: pytest
+      - name: Tests with coverage
+        run: python -m coverage run -m pytest
+
+      - name: Coverage report
+        run: python -m coverage report
+
+      - name: Coverage HTML report
+        run: python -m coverage html
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: EvaluationDeGPT-coverage
+          path: htmlcov/
 
       - name: Build executable
         run: pyinstaller --noconfirm --clean --onefile --windowed --name EvaluationDeGPT src/evaluation_de_gpt/__main__.py
