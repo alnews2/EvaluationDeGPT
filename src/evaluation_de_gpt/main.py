@@ -53,35 +53,35 @@ class CalculatorWindow(QMainWindow):
         layout.addWidget(self._memory_label, 1, 0, 1, 4)
 
         buttons = [
-            ("C", 2, 0, self.clear),
-            ("⌫", 2, 1, self.backspace),
-            ("÷", 2, 3, lambda: self.set_operator("÷")),
-            ("7", 3, 0, lambda: self.input_digit("7")),
-            ("8", 3, 1, lambda: self.input_digit("8")),
-            ("9", 3, 2, lambda: self.input_digit("9")),
-            ("×", 3, 3, lambda: self.set_operator("×")),
-            ("4", 4, 0, lambda: self.input_digit("4")),
-            ("5", 4, 1, lambda: self.input_digit("5")),
-            ("6", 4, 2, lambda: self.input_digit("6")),
-            ("-", 4, 3, lambda: self.set_operator("-")),
-            ("1", 5, 0, lambda: self.input_digit("1")),
-            ("2", 5, 1, lambda: self.input_digit("2")),
-            ("3", 5, 2, lambda: self.input_digit("3")),
-            ("+", 5, 3, lambda: self.set_operator("+")),
-            ("0", 6, 0, lambda: self.input_digit("0")),
-            (",", 6, 1, self.input_decimal),
-            ("=", 6, 2, self.equals),
-            ("±", 6, 3, self.toggle_sign),
-            ("M", 7, 0, self.memory_store),
-            ("MR", 7, 1, self.memory_recall),
-            ("Historique", 8, 0, self.show_history),
+            ("C", 2, 0, self.clear, 1),
+            ("⌫", 2, 1, self.backspace, 1),
+            ("÷", 2, 3, lambda: self.set_operator("÷"), 1),
+            ("7", 3, 0, lambda: self.input_digit("7"), 1),
+            ("8", 3, 1, lambda: self.input_digit("8"), 1),
+            ("9", 3, 2, lambda: self.input_digit("9"), 1),
+            ("×", 3, 3, lambda: self.set_operator("×"), 1),
+            ("4", 4, 0, lambda: self.input_digit("4"), 1),
+            ("5", 4, 1, lambda: self.input_digit("5"), 1),
+            ("6", 4, 2, lambda: self.input_digit("6"), 1),
+            ("-", 4, 3, lambda: self.set_operator("-"), 1),
+            ("1", 5, 0, lambda: self.input_digit("1"), 1),
+            ("2", 5, 1, lambda: self.input_digit("2"), 1),
+            ("3", 5, 2, lambda: self.input_digit("3"), 1),
+            ("+", 5, 3, lambda: self.set_operator("+"), 1),
+            ("0", 6, 0, lambda: self.input_digit("0"), 1),
+            (",", 6, 1, self.input_decimal, 1),
+            ("=", 6, 2, self.equals, 1),
+            ("±", 6, 3, self.toggle_sign, 1),
+            ("M", 7, 0, self.memory_store, 1),
+            ("MR", 7, 1, self.memory_recall, 1),
+            ("Historique", 8, 0, self.show_history, 2),
         ]
 
-        for text, row, column, callback in buttons:
+        for text, row, column, callback, column_span in buttons:
             button = QPushButton(text)
             button.setMinimumHeight(55)
             button.clicked.connect(callback)
-            layout.addWidget(button, row, column)
+            layout.addWidget(button, row, column, 1, column_span)
 
         self._credit_label = QLabel(
             "« Application générée par l'intelligence artificielle GPT de la société OpenAI »."
