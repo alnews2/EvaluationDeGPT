@@ -17,6 +17,7 @@ test = [
 ]
 dev = [
     "pytest>=8.4,<9",
+    "coverage>=7.10,<8",
     "ruff>=0.12,<1",
 ]
 
@@ -26,6 +27,17 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/evaluation_de_gpt"]
+
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == .__main__.:",
+]
+skip_empty = true
+show_missing = true
 
 [tool.ruff]
 line-length = 100
