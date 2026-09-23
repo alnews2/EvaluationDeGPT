@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-23
+
+### Changed
+
+- feat: ajouter l'historique des calculs
+
 ### Added
 
 - Ajout d'une fenêtre dédiée affichant l'historique des calculs effectués pendant la session.
