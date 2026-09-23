@@ -15,6 +15,7 @@ def test_history_window_is_attached_to_main_window(app):
     window = CalculatorWindow()
 
     window.show_history()
+    app.processEvents()
 
     assert window._history_window is not None
     assert window._history_window.parentWidget() is window
@@ -27,6 +28,7 @@ def test_history_window_is_aligned_with_main_window(app):
     window.move(200, 150)
 
     window.show_history()
+    app.processEvents()
 
     assert window._history_window is not None
     assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
@@ -40,6 +42,7 @@ def test_history_window_follows_main_window(app):
     window.show_history()
 
     window.move(400, 250)
+    app.processEvents()
 
     assert window._history_window is not None
     assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
