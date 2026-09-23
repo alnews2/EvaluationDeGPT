@@ -29,7 +29,7 @@ def test_history_window_is_aligned_with_main_window(app):
     window.show_history()
 
     assert window._history_window is not None
-    assert window._history_window.pos() == QPoint(0, 0)
+    assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
 
     window.close()
 
