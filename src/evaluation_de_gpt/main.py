@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import sys
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QPoint, Qt
 from PySide6.QtWidgets import (
     QApplication,
     QGridLayout,
@@ -101,7 +101,7 @@ class CalculatorWindow(QMainWindow):
         )
 
     def _memory_text(self) -> str:
-        return f"Mémoire : {self._memory if self._memory is not None else '—'}"
+        return f"Memoire : {self._memory if self._memory is not None else '—'}"
 
     def _refresh(self) -> None:
         self._display_label.setText(self._display)
@@ -195,14 +195,33 @@ class CalculatorWindow(QMainWindow):
             self._display += self._memory
         self._refresh()
 
+    def _position_history_window(self) -> None:
+        if self._history_window is None:
+            return
+        self._history_window.move(self.mapToGlobal(QPoint(0, 0)))
+
     def show_history(self) -> None:
         """Show the calculation history window."""
         if self._history_window is None:
-            self._history_window = HistoryWindow(self._history)
+            self._history_window = HistoryWindow(self._history, self)
         self._history_window.refresh()
+        self._position_history_window()
         self._history_window.show()
         self._history_window.raise_()
         self._history_window.activateWindow()
+
+    def moveEvent(self, event: object) -> None:
+        """Keep the history window attached to the main window."""
+        super().moveEvent(event)
+        if self._history_window is not None and self._history_window.isVisible():
+            self._position_history_window()
+
+    def closeEvent(self, event: object) -> None:
+        """Close the history window when the main window closes."""
+        if self._history_window is not None:
+            self._history_window.close()
+            self._history_window = None
+        super().closeEvent(event)
 
 
 def main() -> int:
