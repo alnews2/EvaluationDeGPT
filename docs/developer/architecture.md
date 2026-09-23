@@ -44,7 +44,7 @@ Chaque calcul réussi est enregistré sous la forme :
 
 La fenêtre d'historique est ouverte depuis la fenêtre principale et permet d'effacer l'ensemble des entrées. Aucune persistance sur disque n'est actuellement prévue.
 
-La fenêtre d'historique est une fenêtre outil rattachée à la fenêtre principale. Elle est positionnée sur le coin supérieur gauche de celle-ci et suit ses déplacements. Elle est également fermée automatiquement lorsque la fenêtre principale est fermée.
+La fenêtre d'historique est une fenêtre outil rattachée à la fenêtre principale. Son coin supérieur droit coïncide avec le coin supérieur gauche de celle-ci, et elle suit ses déplacements. Elle est également fermée automatiquement lorsque la fenêtre principale est fermée.
 
 ## Point d'entrée
 
