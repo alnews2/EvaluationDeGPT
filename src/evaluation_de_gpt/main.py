@@ -201,7 +201,9 @@ class CalculatorWindow(QMainWindow):
     def _position_history_window(self) -> None:
         if self._history_window is None:
             return
-        self._history_window.move(self.mapToGlobal(QPoint(0, 0)))
+        top_left = self.frameGeometry().topLeft()
+        history_width = self._history_window.frameGeometry().width()
+        self._history_window.move(top_left.x() - history_width, top_left.y())
 
     def show_history(self) -> None:
         """Show the calculation history window."""
