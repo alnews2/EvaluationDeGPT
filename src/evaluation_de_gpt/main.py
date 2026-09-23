@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import sys
 
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QCloseEvent, QMoveEvent
 from PySide6.QtWidgets import (
     QApplication,
