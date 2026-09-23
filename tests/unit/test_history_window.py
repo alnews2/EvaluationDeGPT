@@ -31,7 +31,7 @@ def test_history_window_is_aligned_with_main_window(app):
     app.processEvents()
 
     assert window._history_window is not None
-    assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
+    assert window._history_window.frameGeometry().topRight() == window.frameGeometry().topLeft()
 
     window.close()
 
@@ -45,7 +45,7 @@ def test_history_window_follows_main_window(app):
     app.processEvents()
 
     assert window._history_window is not None
-    assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
+    assert window._history_window.frameGeometry().topRight() == window.frameGeometry().topLeft()
 
     window.close()
 
