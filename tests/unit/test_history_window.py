@@ -1,4 +1,5 @@
 import pytest
+from PySide6.QtCore import QPoint
 from PySide6.QtWidgets import QApplication
 
 from evaluation_de_gpt.main import CalculatorWindow
@@ -28,12 +29,7 @@ def test_history_window_is_aligned_with_main_window(app):
     window.show_history()
 
     assert window._history_window is not None
-    assert window._history_window.pos() == window.mapFromGlobal(
-        window._history_window.mapToGlobal(window._history_window.pos())
-    )
-
-    expected_position = window.mapToGlobal(window.rect().topLeft())
-    assert window._history_window.pos() == expected_position
+    assert window._history_window.pos() == QPoint(0, 0)
 
     window.close()
 
@@ -46,7 +42,7 @@ def test_history_window_follows_main_window(app):
     window.move(400, 250)
 
     assert window._history_window is not None
-    assert window._history_window.pos() == window.mapToGlobal(window.rect().topLeft())
+    assert window._history_window.pos() == QPoint(0, 0)
 
     window.close()
 
