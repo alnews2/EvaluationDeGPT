@@ -38,6 +38,8 @@ def test_history_window_is_aligned_with_main_window(app):
 def test_history_window_follows_main_window(app):
     window = CalculatorWindow()
     window.move(200, 150)
+    window.show()
+    app.processEvents()
     window.show_history()
 
     window.move(400, 250)
