@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import sys
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QCloseEvent, QMoveEvent
 from PySide6.QtWidgets import (
     QApplication,
@@ -201,17 +201,19 @@ class CalculatorWindow(QMainWindow):
     def _position_history_window(self) -> None:
         if self._history_window is None:
             return
-        top_left = self.frameGeometry().topLeft()
-        history_width = self._history_window.frameGeometry().width()
-        self._history_window.move(top_left.x() - history_width, top_left.y())
+        target = self.frameGeometry().topLeft()
+        current = self._history_window.frameGeometry().topLeft()
+        delta = target - current
+        if delta != QPoint(0, 0):
+            self._history_window.move(self._history_window.pos() + delta)
 
     def show_history(self) -> None:
         """Show the calculation history window."""
         if self._history_window is None:
             self._history_window = HistoryWindow(self._history, self)
         self._history_window.refresh()
-        self._position_history_window()
         self._history_window.show()
+        self._position_history_window()
         self._history_window.raise_()
         self._history_window.activateWindow()
 
