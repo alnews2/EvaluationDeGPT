@@ -1,5 +1,4 @@
 import pytest
-from PySide6.QtCore import QPoint
 from PySide6.QtWidgets import QApplication
 
 from evaluation_de_gpt.main import CalculatorWindow
