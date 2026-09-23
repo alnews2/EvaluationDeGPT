@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
 )
 
 from .calculator import CalculatorError, calculate
+from .history import CalculationHistory
+from .history_window import HistoryWindow
 
 
 class CalculatorWindow(QMainWindow):
@@ -23,13 +25,15 @@ class CalculatorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Calculatrice")
-        self.setFixedSize(320, 535)
+        self.setFixedSize(320, 575)
 
         self._display = "0"
         self._left: str | None = None
         self._operator: str | None = None
         self._waiting_for_operand = False
         self._memory: str | None = None
+        self._history = CalculationHistory()
+        self._history_window: HistoryWindow | None = None
 
         self._display_label = QLabel(self._display)
         self._display_label.setAlignment(
@@ -49,34 +53,35 @@ class CalculatorWindow(QMainWindow):
         layout.addWidget(self._memory_label, 1, 0, 1, 4)
 
         buttons = [
-            ("C", 2, 0, self.clear),
-            ("⌫", 2, 1, self.backspace),
-            ("÷", 2, 3, lambda: self.set_operator("÷")),
-            ("7", 3, 0, lambda: self.input_digit("7")),
-            ("8", 3, 1, lambda: self.input_digit("8")),
-            ("9", 3, 2, lambda: self.input_digit("9")),
-            ("×", 3, 3, lambda: self.set_operator("×")),
-            ("4", 4, 0, lambda: self.input_digit("4")),
-            ("5", 4, 1, lambda: self.input_digit("5")),
-            ("6", 4, 2, lambda: self.input_digit("6")),
-            ("-", 4, 3, lambda: self.set_operator("-")),
-            ("1", 5, 0, lambda: self.input_digit("1")),
-            ("2", 5, 1, lambda: self.input_digit("2")),
-            ("3", 5, 2, lambda: self.input_digit("3")),
-            ("+", 5, 3, lambda: self.set_operator("+")),
-            ("0", 6, 0, lambda: self.input_digit("0")),
-            (",", 6, 1, self.input_decimal),
-            ("=", 6, 2, self.equals),
-            ("±", 6, 3, self.toggle_sign),
-            ("M", 7, 0, self.memory_store),
-            ("MR", 7, 1, self.memory_recall),
+            ("C", 2, 0, self.clear, 1),
+            ("⌫", 2, 1, self.backspace, 1),
+            ("÷", 2, 3, lambda: self.set_operator("÷"), 1),
+            ("7", 3, 0, lambda: self.input_digit("7"), 1),
+            ("8", 3, 1, lambda: self.input_digit("8"), 1),
+            ("9", 3, 2, lambda: self.input_digit("9"), 1),
+            ("×", 3, 3, lambda: self.set_operator("×"), 1),
+            ("4", 4, 0, lambda: self.input_digit("4"), 1),
+            ("5", 4, 1, lambda: self.input_digit("5"), 1),
+            ("6", 4, 2, lambda: self.input_digit("6"), 1),
+            ("-", 4, 3, lambda: self.set_operator("-"), 1),
+            ("1", 5, 0, lambda: self.input_digit("1"), 1),
+            ("2", 5, 1, lambda: self.input_digit("2"), 1),
+            ("3", 5, 2, lambda: self.input_digit("3"), 1),
+            ("+", 5, 3, lambda: self.set_operator("+"), 1),
+            ("0", 6, 0, lambda: self.input_digit("0"), 1),
+            (",", 6, 1, self.input_decimal, 1),
+            ("=", 6, 2, self.equals, 1),
+            ("±", 6, 3, self.toggle_sign, 1),
+            ("M", 7, 0, self.memory_store, 1),
+            ("MR", 7, 1, self.memory_recall, 1),
+            ("Historique", 8, 0, self.show_history, 2),
         ]
 
-        for text, row, column, callback in buttons:
+        for text, row, column, callback, column_span in buttons:
             button = QPushButton(text)
             button.setMinimumHeight(55)
             button.clicked.connect(callback)
-            layout.addWidget(button, row, column)
+            layout.addWidget(button, row, column, 1, column_span)
 
         self._credit_label = QLabel(
             "« Application générée par l'intelligence artificielle GPT de la société OpenAI »."
@@ -84,7 +89,7 @@ class CalculatorWindow(QMainWindow):
         self._credit_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._credit_label.setWordWrap(True)
         self._credit_label.setObjectName("credit")
-        layout.addWidget(self._credit_label, 8, 0, 1, 4)
+        layout.addWidget(self._credit_label, 9, 0, 1, 4)
 
         self.setCentralWidget(central)
         self.setStyleSheet(
@@ -128,11 +133,15 @@ class CalculatorWindow(QMainWindow):
     def _calculate_pending(self) -> None:
         if self._left is None or self._operator is None:
             return
+        expression = f"{self._left} {self._operator} {self._display}"
         self._display = calculate(self._left, self._operator, self._display)
+        self._history.add(expression, self._display)
         self._left = None
         self._operator = None
         self._waiting_for_operand = True
         self._refresh()
+        if self._history_window is not None:
+            self._history_window.refresh()
 
     def equals(self) -> None:
         if self._operator is None:
@@ -185,6 +194,15 @@ class CalculatorWindow(QMainWindow):
         else:
             self._display += self._memory
         self._refresh()
+
+    def show_history(self) -> None:
+        """Show the calculation history window."""
+        if self._history_window is None:
+            self._history_window = HistoryWindow(self._history)
+        self._history_window.refresh()
+        self._history_window.show()
+        self._history_window.raise_()
+        self._history_window.activateWindow()
 
 
 def main() -> int:

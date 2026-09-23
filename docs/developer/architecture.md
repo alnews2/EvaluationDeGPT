@@ -10,21 +10,20 @@ L'architecture est volontairement simple. Le projet est une application desktop 
 src/evaluation_de_gpt/
 ├── __init__.py
 ├── __main__.py
+├── calculator.py
+├── history.py
+├── history_window.py
 └── main.py
 ```
 
-La première version reste compacte. `main.py` regroupe actuellement la fenêtre et la logique de calcul nécessaire à la calculatrice.
+Les responsabilités commencent à être séparées au fur et à mesure que l'application grandit :
 
-À mesure que l'application grandira, les responsabilités pourront être séparées progressivement :
+- `calculator.py` : logique de calcul indépendante de l'interface ;
+- `history.py` : modèle de l'historique des calculs de la session ;
+- `history_window.py` : fenêtre PySide6 d'affichage et d'effacement de l'historique ;
+- `main.py` : fenêtre principale et orchestration de l'interface.
 
-- `ui/` : fenêtres, widgets et dialogues PySide6 ;
-- `viewmodels/` : état et orchestration entre interface et domaine ;
-- `domain/` : règles métier indépendantes de PySide6 ;
-- `services/` : cas d'usage et services applicatifs ;
-- `infrastructure/` : accès aux fichiers, base de données ou systèmes externes ;
-- `config/` : configuration de l'application.
-
-Ces répertoires ne doivent être créés que lorsqu'une responsabilité réelle le justifie.
+À mesure que l'application grandira, les responsabilités pourront être séparées progressivement : `ui/`, `viewmodels/`, `domain/`, `services/`, `infrastructure/` ou `config/` pourront être introduits lorsqu'une responsabilité réelle le justifiera.
 
 ## Principes
 
@@ -32,6 +31,18 @@ Ces répertoires ne doivent être créés que lorsqu'une responsabilité réelle
 2. Éviter de placer de la logique métier dans les widgets lorsque celle-ci peut être testée indépendamment.
 3. Préférer une évolution incrémentale à une refonte préventive.
 4. Conserver une application exécutable et testable à chaque étape.
+
+## Historique des calculs
+
+L'historique est conservé uniquement pendant la session courante de l'application.
+
+Chaque calcul réussi est enregistré sous la forme :
+
+```text
+2 + 3 = 5
+```
+
+La fenêtre d'historique est ouverte depuis la fenêtre principale et permet d'effacer l'ensemble des entrées. Aucune persistance sur disque n'est actuellement prévue.
 
 ## Point d'entrée
 
