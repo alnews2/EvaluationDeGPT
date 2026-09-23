@@ -40,7 +40,7 @@ En cas de division par zéro, l'interface affiche `Erreur`.
 
 Le bouton **Historique** ouvre une fenêtre dédiée contenant les calculs effectués pendant la session.
 
-La fenêtre d'historique reste rattachée à la fenêtre principale : elle est positionnée sur son coin supérieur gauche et suit ses déplacements. Elle se ferme automatiquement lorsque la fenêtre principale est fermée.
+La fenêtre d'historique reste rattachée à la fenêtre principale : son coin supérieur droit coïncide avec le coin supérieur gauche de celle-ci et elle suit ses déplacements. Elle se ferme automatiquement lorsque la fenêtre principale est fermée.
 
 Le bouton **Effacer l'historique** supprime toutes les entrées de la session.
 
