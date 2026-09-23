@@ -42,7 +42,7 @@ def test_history_window_follows_main_window(app):
     window.move(400, 250)
 
     assert window._history_window is not None
-    assert window._history_window.pos() == QPoint(0, 0)
+    assert window._history_window.mapToGlobal(QPoint(0, 0)) == window.mapToGlobal(QPoint(0, 0))
 
     window.close()
 
