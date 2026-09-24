@@ -170,13 +170,8 @@ class CalculatorWindow(QMainWindow):
         if not re.fullmatch(r"[+-]?\d+(?:\.\d*)?", text):
             return
 
-        if self._waiting_for_operand or self._display in {"0", "Erreur"}:
-            self._display = text
-            self._waiting_for_operand = False
-        elif text.startswith(("+", "-")):
-            self._display = text
-        else:
-            self._display += text
+        self._display = text
+        self._waiting_for_operand = False
         self._refresh()
 
     def _memory_text(self) -> str:
