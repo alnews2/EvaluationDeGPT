@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import re
 import sys
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction, QCloseEvent, QMoveEvent
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QAction, QCloseEvent, QKeyEvent, QMoveEvent
 from PySide6.QtWidgets import (
     QApplication,
     QGridLayout,
@@ -19,6 +20,26 @@ from PySide6.QtWidgets import (
 from .calculator import CalculatorError, calculate
 from .history import CalculationHistory
 from .history_window import HistoryWindow
+
+
+class ResultDisplay(QLabel):
+    """Display the calculator result and accept paste shortcuts."""
+
+    paste_requested = Signal()
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        if (
+            event.key() == Qt.Key.Key_V
+            and event.modifiers() & Qt.KeyboardModifier.ControlModifier
+        ):
+            self.paste_requested.emit()
+            event.accept()
+            return
+        super().keyPressEvent(event)
 
 
 class CalculatorWindow(QMainWindow):
@@ -38,7 +59,8 @@ class CalculatorWindow(QMainWindow):
         self._history_window: HistoryWindow | None = None
         self._history_button: QPushButton | None = None
 
-        self._display_label = QLabel(self._display)
+        self._display_label = ResultDisplay(self._display)
+        self._display_label.paste_requested.connect(self._paste_number)
         self._display_label.setAlignment(
             Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         )
@@ -121,6 +143,11 @@ class CalculatorWindow(QMainWindow):
         copy_action = QAction("Copier", menu)
         copy_action.triggered.connect(self._copy_display)
         menu.addAction(copy_action)
+
+        paste_action = QAction("Coller", menu)
+        paste_action.triggered.connect(self._paste_number)
+        paste_action.setEnabled(self._clipboard_contains_number())
+        menu.addAction(paste_action)
         return menu
 
     def _show_display_context_menu(self, position) -> None:
@@ -131,6 +158,21 @@ class CalculatorWindow(QMainWindow):
     def _copy_display(self) -> None:
         """Copy the displayed result to the system clipboard."""
         QApplication.clipboard().setText(self._display)
+
+    def _clipboard_contains_number(self) -> bool:
+        """Return whether the clipboard contains a valid number."""
+        text = QApplication.clipboard().text().strip().replace(",", ".")
+        return bool(re.fullmatch(r"[+-]?\d+(?:\.\d*)?", text))
+
+    def _paste_number(self) -> None:
+        """Paste a clipboard number as calculator input."""
+        text = QApplication.clipboard().text().strip().replace(",", ".")
+        if not re.fullmatch(r"[+-]?\d+(?:\.\d*)?", text):
+            return
+
+        self._display = text
+        self._waiting_for_operand = False
+        self._refresh()
 
     def _memory_text(self) -> str:
         return f"Mémoire : {self._memory if self._memory is not None else '—'}"

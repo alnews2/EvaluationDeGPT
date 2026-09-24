@@ -117,11 +117,50 @@ def test_result_display_has_copy_context_menu(app):
     )
 
     menu = window._create_display_context_menu()
-    assert [action.text() for action in menu.actions()] == ["Copier"]
+    assert [action.text() for action in menu.actions()] == ["Copier", "Coller"]
 
     window._display = "123.45"
     window._copy_display()
     assert app.clipboard().text() == "123.45"
 
     menu.deleteLater()
+    window.close()
+
+
+def test_paste_number_from_clipboard(app):
+    window = CalculatorWindow()
+
+    app.clipboard().setText("123,45")
+    window._paste_number()
+    assert window._display == "123.45"
+
+    app.clipboard().setText("-6.5")
+    window._paste_number()
+    assert window._display == "-6.5"
+
+    window.close()
+
+
+def test_successive_pastes_replace_the_display(app):
+    window = CalculatorWindow()
+
+    app.clipboard().setText("123")
+    window._paste_number()
+    assert window._display == "123"
+
+    app.clipboard().setText("45.6")
+    window._paste_number()
+    assert window._display == "45.6"
+
+    window.close()
+
+
+def test_paste_invalid_text_is_ignored(app):
+    window = CalculatorWindow()
+    window._display = "12"
+
+    app.clipboard().setText("12 + 3")
+    window._paste_number()
+
+    assert window._display == "12"
     window.close()
