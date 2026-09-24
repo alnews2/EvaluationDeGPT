@@ -42,7 +42,7 @@ Chaque calcul réussi est enregistré sous la forme :
 2 + 3 = 5
 ```
 
-La fenêtre d'historique est ouverte depuis la fenêtre principale et permet d'effacer l'ensemble des entrées. Aucune persistance sur disque n'est actuellement prévue.
+La fenêtre d'historique est ouverte depuis la fenêtre principale avec le bouton **Historique**, qui devient **Fermer Historique** tant que la fenêtre est visible. Le même bouton permet alors de la fermer et reprend son libellé **Historique**. Aucune persistance sur disque n'est actuellement prévue.
 
 La fenêtre d'historique est une fenêtre outil rattachée à la fenêtre principale. Son coin supérieur droit coïncide avec le coin supérieur gauche de celle-ci, et elle suit ses déplacements. Elle est également fermée automatiquement lorsque la fenêtre principale est fermée.
 
