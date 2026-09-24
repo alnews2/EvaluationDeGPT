@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-09-24
+
+### Changed
+
+- fix: abaisser l'affichage de la mémoire
+
 ### Changed
 
 - Abaissement d’environ 5 mm de la zone d’affichage du contenu de la mémoire dans la fenêtre principale.
