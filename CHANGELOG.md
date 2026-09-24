@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-09-24
+
+### Changed
+
+- fix: transformer Historique en bouton basculant
+
 ### Changed
 
 - Réduction de la taille de police des libellés « Historique » et « Fermer Historique » pour améliorer leur affichage dans le bouton.
