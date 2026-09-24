@@ -141,6 +141,20 @@ def test_paste_number_from_clipboard(app):
     window.close()
 
 
+def test_successive_pastes_replace_the_display(app):
+    window = CalculatorWindow()
+
+    app.clipboard().setText("123")
+    window._paste_number()
+    assert window._display == "123"
+
+    app.clipboard().setText("45.6")
+    window._paste_number()
+    assert window._display == "45.6"
+
+    window.close()
+
+
 def test_paste_invalid_text_is_ignored(app):
     window = CalculatorWindow()
     window._display = "12"
