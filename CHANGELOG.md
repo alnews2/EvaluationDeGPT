@@ -7,6 +7,10 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Changed
+
+- Le bouton « Historique » devient « Fermer Historique » lorsque la fenêtre d’historique est ouverte et permet de la fermer au second appui.
+
 ## [0.5.1] - 2026-09-24
 
 ### Changed
