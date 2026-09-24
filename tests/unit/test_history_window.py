@@ -1,4 +1,5 @@
 import pytest
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
 
 from evaluation_de_gpt.main import CalculatorWindow
@@ -104,4 +105,23 @@ def test_history_button_resets_when_history_window_is_closed_directly(app):
     assert window._history_window is None
     assert window._history_button.text() == "Historique"
 
+    window.close()
+
+
+def test_result_display_has_copy_context_menu(app):
+    window = CalculatorWindow()
+
+    assert (
+        window._display_label.contextMenuPolicy()
+        == Qt.ContextMenuPolicy.CustomContextMenu
+    )
+
+    menu = window._create_display_context_menu()
+    assert [action.text() for action in menu.actions()] == ["Copier"]
+
+    window._display = "123.45"
+    window._copy_display()
+    assert app.clipboard().text() == "123.45"
+
+    menu.deleteLater()
     window.close()
