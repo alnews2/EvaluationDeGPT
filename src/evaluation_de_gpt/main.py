@@ -89,6 +89,7 @@ class CalculatorWindow(QMainWindow):
 
         self._history_button = QPushButton("Historique")
         self._history_button.setMinimumHeight(55)
+        self._history_button.setStyleSheet("font-size: 14px;")
         self._history_button.clicked.connect(self.toggle_history)
         layout.addWidget(self._history_button, 8, 0, 1, 2)
 
