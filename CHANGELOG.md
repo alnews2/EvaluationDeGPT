@@ -7,6 +7,10 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Changed
+
+- Réduction de la taille de police des libellés « Historique » et « Fermer Historique » pour améliorer leur affichage dans le bouton.
+
 ## [0.5.1] - 2026-09-24
 
 ### Changed

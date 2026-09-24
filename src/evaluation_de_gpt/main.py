@@ -35,6 +35,7 @@ class CalculatorWindow(QMainWindow):
         self._memory: str | None = None
         self._history = CalculationHistory()
         self._history_window: HistoryWindow | None = None
+        self._history_button: QPushButton | None = None
 
         self._display_label = QLabel(self._display)
         self._display_label.setAlignment(
@@ -78,7 +79,6 @@ class CalculatorWindow(QMainWindow):
             ("±", 6, 3, self.toggle_sign, 1),
             ("M", 7, 0, self.memory_store, 1),
             ("MR", 7, 1, self.memory_recall, 1),
-            ("Historique", 8, 0, self.show_history, 2),
         ]
 
         for text, row, column, callback, column_span in buttons:
@@ -86,6 +86,12 @@ class CalculatorWindow(QMainWindow):
             button.setMinimumHeight(55)
             button.clicked.connect(callback)
             layout.addWidget(button, row, column, 1, column_span)
+
+        self._history_button = QPushButton("Historique")
+        self._history_button.setMinimumHeight(55)
+        self._history_button.setStyleSheet("font-size: 14px;")
+        self._history_button.clicked.connect(self.toggle_history)
+        layout.addWidget(self._history_button, 8, 0, 1, 2)
 
         self._credit_label = QLabel(
             "« Application générée par l'intelligence artificielle GPT de la société OpenAI »."
@@ -208,15 +214,29 @@ class CalculatorWindow(QMainWindow):
         history_top_left.setX(main_top_left.x() - history_width + 1)
         self._history_window.move(history_top_left)
 
-    def show_history(self) -> None:
-        """Show the calculation history window."""
+    def toggle_history(self) -> None:
+        """Toggle the calculation history window."""
+        if self._history_window is not None and self._history_window.isVisible():
+            self._history_window.close()
+            return
+
         if self._history_window is None:
             self._history_window = HistoryWindow(self._history, self)
+            self._history_window.closed.connect(self._history_window_closed)
+
         self._history_window.refresh()
         self._history_window.show()
         self._position_history_window()
         self._history_window.raise_()
         self._history_window.activateWindow()
+        if self._history_button is not None:
+            self._history_button.setText("Fermer Historique")
+
+    def _history_window_closed(self) -> None:
+        """Reset the history button when the history window closes."""
+        self._history_window = None
+        if self._history_button is not None:
+            self._history_button.setText("Historique")
 
     def moveEvent(self, event: QMoveEvent) -> None:
         """Keep the history window attached to the main window."""
@@ -228,7 +248,6 @@ class CalculatorWindow(QMainWindow):
         """Close the history window when the main window closes."""
         if self._history_window is not None:
             self._history_window.close()
-            self._history_window = None
         super().closeEvent(event)
 
 
