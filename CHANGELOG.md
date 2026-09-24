@@ -7,6 +7,12 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-24
+
+### Changed
+
+- feat: rattacher la fenêtre historique à la fenêtre principale
+
 ### Changed
 
 - La fenêtre d'historique est maintenant rattachée à la fenêtre principale, avec son coin supérieur droit aligné sur le coin supérieur gauche de celle-ci, et se ferme avec elle.
