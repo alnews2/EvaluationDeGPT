@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QListWidget, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
 from .history import CalculationHistory
@@ -10,6 +10,8 @@ from .history import CalculationHistory
 
 class HistoryWindow(QMainWindow):
     """Display the calculations performed during the current session."""
+
+    closed = Signal()
 
     def __init__(
         self,
@@ -43,3 +45,8 @@ class HistoryWindow(QMainWindow):
         """Clear the history and update the display."""
         self._history.clear()
         self.refresh()
+
+    def closeEvent(self, event) -> None:
+        """Notify the parent when the history window closes."""
+        self.closed.emit()
+        super().closeEvent(event)
