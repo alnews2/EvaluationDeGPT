@@ -5,12 +5,13 @@ from __future__ import annotations
 import sys
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QCloseEvent, QMoveEvent
+from PySide6.QtGui import QAction, QCloseEvent, QMoveEvent
 from PySide6.QtWidgets import (
     QApplication,
     QGridLayout,
     QLabel,
     QMainWindow,
+    QMenu,
     QPushButton,
     QWidget,
 )
@@ -43,6 +44,10 @@ class CalculatorWindow(QMainWindow):
         )
         self._display_label.setMinimumHeight(70)
         self._display_label.setObjectName("display")
+        self._display_label.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self._display_label.customContextMenuRequested.connect(
+            self._show_display_context_menu
+        )
 
         self._memory_label = QLabel(self._memory_text())
         self._memory_label.setAlignment(
@@ -109,6 +114,23 @@ class CalculatorWindow(QMainWindow):
             "QPushButton { font-size: 18px; }"
             "QLabel#credit { font-size: 10px; padding: 6px; }"
         )
+
+    def _create_display_context_menu(self) -> QMenu:
+        """Create the context menu for the result display."""
+        menu = QMenu(self._display_label)
+        copy_action = QAction("Copier", menu)
+        copy_action.triggered.connect(self._copy_display)
+        menu.addAction(copy_action)
+        return menu
+
+    def _show_display_context_menu(self, position) -> None:
+        """Show the result display context menu."""
+        menu = self._create_display_context_menu()
+        menu.exec(self._display_label.mapToGlobal(position))
+
+    def _copy_display(self) -> None:
+        """Copy the displayed result to the system clipboard."""
+        QApplication.clipboard().setText(self._display)
 
     def _memory_text(self) -> str:
         return f"Mémoire : {self._memory if self._memory is not None else '—'}"

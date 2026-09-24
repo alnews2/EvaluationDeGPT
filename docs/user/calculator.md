@@ -34,6 +34,8 @@ La saisie se fait avec les boutons de la fenêtre :
 
 La mémoire conserve une seule valeur et reste disponible après un effacement de l'affichage.
 
+Un clic droit sur la zone d’affichage du résultat ouvre un menu contextuel contenant **Copier**, qui copie la valeur affichée dans le presse-papiers.
+
 En cas de division par zéro, l'interface affiche `Erreur`.
 
 ### Historique
