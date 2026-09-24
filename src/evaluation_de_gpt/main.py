@@ -48,6 +48,7 @@ class CalculatorWindow(QMainWindow):
             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         )
         self._memory_label.setObjectName("memory")
+        self._memory_label.setContentsMargins(8, 19, 8, 0)
 
         central = QWidget()
         layout = QGridLayout(central)
@@ -98,7 +99,7 @@ class CalculatorWindow(QMainWindow):
         self.setStyleSheet(
             "QLabel#display { font-size: 30px; padding: 8px; color: white; "
             "background-color: black; border: 1px solid #999; }"
-            "QLabel#memory { font-size: 13px; padding: 3px 8px; }"
+            "QLabel#memory { font-size: 13px; padding: 0; }"
             "QPushButton { font-size: 18px; }"
             "QLabel#credit { font-size: 10px; padding: 6px; }"
         )
