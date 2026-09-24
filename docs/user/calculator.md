@@ -36,6 +36,14 @@ La mémoire conserve une seule valeur et reste disponible après un effacement d
 
 En cas de division par zéro, l'interface affiche `Erreur`.
 
+### Historique
+
+Le bouton **Historique** ouvre une fenêtre dédiée contenant les calculs effectués pendant la session.
+
+La fenêtre d'historique reste rattachée à la fenêtre principale : son coin supérieur droit coïncide avec le coin supérieur gauche de celle-ci et elle suit ses déplacements. Elle se ferme automatiquement lorsque la fenêtre principale est fermée.
+
+Le bouton **Effacer l'historique** supprime toutes les entrées de la session.
+
 ## Architecture fonctionnelle
 
 La logique de calcul est distincte de l'interface graphique. Cela permet de tester les opérations indépendamment de PySide6 et limite le risque de régression lors des évolutions de l'interface.

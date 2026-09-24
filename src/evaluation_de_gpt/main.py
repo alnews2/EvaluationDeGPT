@@ -5,6 +5,7 @@ from __future__ import annotations
 import sys
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QCloseEvent, QMoveEvent
 from PySide6.QtWidgets import (
     QApplication,
     QGridLayout,
@@ -43,7 +44,9 @@ class CalculatorWindow(QMainWindow):
         self._display_label.setObjectName("display")
 
         self._memory_label = QLabel(self._memory_text())
-        self._memory_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        self._memory_label.setAlignment(
+            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        )
         self._memory_label.setObjectName("memory")
 
         central = QWidget()
@@ -195,14 +198,37 @@ class CalculatorWindow(QMainWindow):
             self._display += self._memory
         self._refresh()
 
+    def _position_history_window(self) -> None:
+        if self._history_window is None:
+            return
+        main_top_left = self.frameGeometry().topLeft()
+        history_width = self._history_window.frameGeometry().width()
+        history_top_left = main_top_left
+        history_top_left.setX(main_top_left.x() - history_width + 1)
+        self._history_window.move(history_top_left)
+
     def show_history(self) -> None:
         """Show the calculation history window."""
         if self._history_window is None:
-            self._history_window = HistoryWindow(self._history)
+            self._history_window = HistoryWindow(self._history, self)
         self._history_window.refresh()
         self._history_window.show()
+        self._position_history_window()
         self._history_window.raise_()
         self._history_window.activateWindow()
+
+    def moveEvent(self, event: QMoveEvent) -> None:
+        """Keep the history window attached to the main window."""
+        super().moveEvent(event)
+        if self._history_window is not None and self._history_window.isVisible():
+            self._position_history_window()
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        """Close the history window when the main window closes."""
+        if self._history_window is not None:
+            self._history_window.close()
+            self._history_window = None
+        super().closeEvent(event)
 
 
 def main() -> int:

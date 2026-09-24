@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QListWidget, QMainWindow, QPushButton, QVBoxLayout, QWidget
 
 from .history import CalculationHistory
@@ -10,8 +11,12 @@ from .history import CalculationHistory
 class HistoryWindow(QMainWindow):
     """Display the calculations performed during the current session."""
 
-    def __init__(self, history: CalculationHistory) -> None:
-        super().__init__()
+    def __init__(
+        self,
+        history: CalculationHistory,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(parent, Qt.WindowType.Tool)
         self._history = history
         self.setWindowTitle("Historique des calculs")
         self.resize(360, 300)
