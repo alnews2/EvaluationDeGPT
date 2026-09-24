@@ -7,6 +7,11 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ## [Unreleased]
 
+### Added
+
+- Ajout de l’action « Copier » dans le menu contextuel de la zone d’affichage du résultat, accessible par clic droit.
+
+
 ## [0.5.2] - 2026-09-24
 
 ### Changed
