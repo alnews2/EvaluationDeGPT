@@ -49,3 +49,10 @@ Le bouton **Effacer l'historique** supprime toutes les entrées de la session.
 ## Architecture fonctionnelle
 
 La logique de calcul est distincte de l'interface graphique. Cela permet de tester les opérations indépendamment de PySide6 et limite le risque de régression lors des évolutions de l'interface.
+
+
+### Coller un nombre
+
+La zone d’affichage accepte le collage d’un nombre depuis une autre application. Un clic droit sur l’affichage propose l’action **Coller**. Le raccourci clavier **Ctrl+V** est également pris en charge lorsque l’affichage a le focus.
+
+Les nombres avec un point ou une virgule décimale sont acceptés. Les contenus qui ne correspondent pas à un nombre sont ignorés.
