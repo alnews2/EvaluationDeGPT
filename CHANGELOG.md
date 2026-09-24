@@ -9,7 +9,7 @@ Les versions suivent le versionnement sémantique (SemVer).
 
 ### Added
 
-- Ajout du collage d’un nombre dans la zone d’affichage, via le menu contextuel « Coller » ou le raccourci Ctrl+V.
+- Ajout du collage d’un nombre dans la zone d’affichage, via le menu contextuel « Coller » ou le raccourci Ctrl+V ; le nombre collé remplace désormais entièrement la valeur affichée.
 
 ## [0.6.0] - 2026-09-24
 
